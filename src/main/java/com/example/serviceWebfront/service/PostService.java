@@ -1,8 +1,6 @@
 package com.example.serviceWebfront.service;
 
-import com.example.servicePost.PostServiceGrpc;
-import com.example.servicePost.createPostRequest;
-import com.example.servicePost.createPostResponse;
+import com.example.servicePost.*;
 import com.example.serviceUser.UpdateUserPostRequest;
 import com.example.serviceUser.UserRequest;
 import com.example.serviceUser.UserResponse;
@@ -63,6 +61,24 @@ public class PostService {
         return createPostResponse.newBuilder()
                 .setMessage("Please transmit data")
                 .build();
+    }
+
+    public updatePostResponse updatePost(PostDto dto) {
+        if (dto != null) {
+            ManagedChannel channelPost = getChannelPost();
+            updatePostRequest request = updatePostRequest.newBuilder()
+                    .setIdPost(dto.getId())
+                    .setContent(dto.getContent())
+                    .setTitle(dto.getTitle())
+                    .build();
+            PostServiceGrpc.PostServiceBlockingStub stub = PostServiceGrpc.newBlockingStub(channelPost);
+            updatePostResponse responseUpdatePost = stub.updatePost(request);
+            return  responseUpdatePost;
+        }
+        return updatePostResponse.newBuilder()
+                .setMessage("Please transmit data")
+                .build();
+
     }
 
 }

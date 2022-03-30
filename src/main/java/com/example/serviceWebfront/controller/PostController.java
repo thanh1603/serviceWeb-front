@@ -1,6 +1,7 @@
 package com.example.serviceWebfront.controller;
 
 import com.example.servicePost.createPostResponse;
+import com.example.servicePost.updatePostResponse;
 import com.example.serviceWebfront.common.DataResult;
 import com.example.serviceWebfront.domain.dto.PostDto;
 import com.example.serviceWebfront.service.PostService;
@@ -19,7 +20,7 @@ public class PostController {
     }
 
 
-    @PostMapping("createPost")
+    @PostMapping("/post/createPost")
     public ResponseEntity<DataResult> createPost(@RequestBody PostDto dto) {
         createPostResponse response= postService.createPost(dto);
 
@@ -29,6 +30,17 @@ public class PostController {
         return new ResponseEntity<>(dataResult, HttpStatus.OK);
 
 
+    }
+    @PostMapping("/post/updatePost")
+    public ResponseEntity<DataResult> updatePost(@RequestBody PostDto dto) {
+        updatePostResponse response = postService.updatePost(dto);
+
+        DataResult dataResult = new DataResult();
+        dataResult.setPostId(response.getIdPost());
+        dataResult.setPostTitle(response.getTitle());
+        dataResult.setPostContent(response.getContent());
+        dataResult.setMessage(response.getMessage());
+        return new ResponseEntity<>(dataResult,HttpStatus.OK);
     }
 
 
